@@ -28,7 +28,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ParkingPeriod'
       description: Get the cost for a parking period
-  /rates/update:
+  /rates:
     post:
       summary: Update the rates information backing the service
       tags: []

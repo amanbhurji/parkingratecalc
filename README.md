@@ -29,6 +29,9 @@ Create a docker image locally with -
  - This uses a docker daemon so remember have it available
  - Uses git tags for figuring out project version
 
+Once the image is published, run the web service from within docker with -
+`docker run -p 8080:8080 <image-id>`
+
 ## Api
 
 The openapi spec defines the api. It can be found in `openapi.yaml` 
@@ -50,5 +53,5 @@ curl -X GET 'http://localhost:8080/calculate' --data '{"start":"2015-07-04T07:00
 
 Update the rates 
 ```
-curl -X POST 'http://localhost:8080/rates/update' --data @rates.json
+curl -X POST 'http://localhost:8080/rates' --data @rates.json
 ```

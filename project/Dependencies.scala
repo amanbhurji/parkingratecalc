@@ -5,7 +5,7 @@ object Dependencies {
   val CirceVersion = "0.13.0"
   val Specs2Version = "4.8.3"
   val LogbackVersion = "1.2.3"
-  val CatsVersion = "2.0.0"
+  val CatsVersion = "2.1.0"
   val DoobieVersion = "0.8.4"
   val EnumeratumVersion = "1.5.13"
   val EnumeratumCirceVersion = "1.5.22"

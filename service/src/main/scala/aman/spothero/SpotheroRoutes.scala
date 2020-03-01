@@ -27,7 +27,7 @@ object SpotheroRoutes {
     val dsl = new Http4sDsl[F] {}
     import dsl._
     HttpRoutes.of[F] {
-      case request @ POST -> Root / "rates" / "update" =>
+      case request @ POST -> Root / "rates" =>
         for {
           rates <- request.as[Rates]
           _ <- R.updateRates(rates)
