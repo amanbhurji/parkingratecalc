@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Spothero parking challenge
+  version: '1.0'
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /calculate:
+    get:
+      summary: Calculate parking rate
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      value:
+                        type: number
+                  - type: string
+      operationId: calculate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParkingPeriod'
+      description: Get the cost for a parking period
+  /rates/update:
+    post:
+      summary: Update the rates information backing the service
+      tags: []
+      responses:
+        '200':
+          description: OK
+      operationId: updateRates
+      description: Update rates configuration
+components:
+  schemas:
+    ParkingPeriod:
+      title: ParkingPeriod
+      type: object
+      properties:
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+    Rates:
+      title: Rates
+      type: object
+      properties:
+        rates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rate'
+    Rate:
+      title: Rate
+      type: object
+      properties:
+        days:
+          type: string
+        times:
+          type: string
+        tz:
+          type: string
+        price:
+          type: number
