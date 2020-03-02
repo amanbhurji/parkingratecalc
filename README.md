@@ -1,3 +1,4 @@
+# Spothero Code Challenge - Aman
 ## Project Overview
 
 A web server in scala using http4s.
@@ -18,38 +19,44 @@ I recommend the use of the IntelliJ IDE for source browsing.
 
 Please do not hesitate to reach out and ask any questions
 
+## Api
+
+The openapi spec defines the api. It can be found in `openapi.yaml`
+
+- Assumptions
+  - The `calculate` `GET` endpoint accepts data in the request body 
+  instead of the query params to solve the issue of having the reserved 
+  character(`+`) in the acceptable time values instead of some hacky
+  solution that handles it in the url query parameter
+
 ## Build Instructions
 
-Compile the project with -
+### Compile the project -
 `sbt compile`
 
-Run the tests with -
+### Run the tests -
 `sbt test`
 
-Launch the server at port 8080 with -
+### Launch the server via sbt at port 8080 -
 `sbt service/run`
 
+### Launch the server via docker -
+
 The project uses a sbt plugin to create a docker image for the service. 
-Creating an explicit dockerfile is unnecessary and a simple matter of copying the generated dockerfile if ever required
+Creating an explicit dockerfile is unnecessary and a simple matter of
+copying the generated dockerfile if ever required
+
+*Requirements to create a docker image for the server* -
+ - Have a docker daemon running
+ - Initialize a git repository and make a commit including everything
+   in the extracted project
 
 Create a docker image locally with -
 `sbt docker:publishLocal`
- - This uses a docker daemon so remember have it available
- - Uses git tags for figuring out project version
 
 Once the image is published, run the web service from within docker with -
 `docker run -p 8080:8080 <image-id>`
 
-## Api
-
-The openapi spec defines the api. It can be found in `openapi.yaml` 
-
-- Assumptions 
-  - The `calculate` `GET` endpoint accepts data in the request body 
-  instead of the query params to solve the issue of having the reserved 
-  character(`+`) in the acceptable time values instead of some hacky 
-  solution that handles it 
-  
 ## Testing the api
 
 Query the parking rate calculator endpoint 
