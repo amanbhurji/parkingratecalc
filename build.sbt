@@ -19,10 +19,12 @@ lazy val root = (project in file("."))
     name := "spothero-app",
     description := "The Spothero project"
   )
-  .aggregate(service)
+  .aggregate(service, metrics)
 
 lazy val service = (project in file("service"))
   .enablePlugins(BuildInfoPlugin, JavaAppPackaging, DockerPlugin)
+  .dependsOn(metrics)
+  .aggregate(metrics)
   .settings(commonCompilerPlugins)
   .settings(commonSettings)
   .settings(
@@ -62,6 +64,24 @@ lazy val service = (project in file("service"))
     scalacOptions ++= Seq("-Ymacro-annotations")
   )
 
+
+lazy val metrics = (project in file("metrics"))
+  .settings(commonCompilerPlugins)
+  .settings(commonSettings)
+  .settings(
+    name := "config-metrics",
+    description := "A prometheus+http4s metrics library",
+    publish / skip := true,
+    publishTo := None,
+    libraryDependencies ++= Seq(
+      Ext.catsCore,
+      Ext.catsEffect,
+      Ext.http4sCore,
+      Ext.http4sDsl,
+      Ext.prometheusClient,
+      Ext.prometheusClientCommon
+    )
+  )
 // Release configuration
 
 // Docker-compatible version strings

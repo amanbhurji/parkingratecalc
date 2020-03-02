@@ -2,13 +2,21 @@
 
 A web server in scala using http4s.
 
-The core business logic of the service can be found in 
+The *core business logic* of the service can be found in 
 `src/main/scala/aman/spothero/core`. The `api` package
 defines the http service and `persistence` package manages 
-file & memory based persistence.  
+file & memory based persistence.
 
-The project is written using intermediate to advanced functional programming concepts 
-that may be a bit unfamiliar. Please do not hesitate to reach out and ask any questions
+I have also included an undocumented `/metrics` endpoint that tracks the server metrics
+and additionally two custom metrics -
+ - `pr_success` - tracks successful calculation of rates 
+ - `pr_failure` - tracks unsuccessful calculation of rates
+
+The project is written using tagless final programming concepts that is
+used by the underlying http4s library.
+I recommend the use of the IntelliJ IDE for source browsing.
+
+Please do not hesitate to reach out and ask any questions
 
 ## Build Instructions
 

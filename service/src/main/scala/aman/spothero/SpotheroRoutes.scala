@@ -5,12 +5,20 @@ import aman.spothero.api.models.Rates
 import aman.spothero.api.models.Rates._
 import cats.effect.Sync
 import cats.implicits._
+import io.prometheus.client.{CollectorRegistry, Counter}
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 
 object SpotheroRoutes {
 
-  def parkingCalculatorRoutes[F[_]: Sync](P: ParkingCalculator[F]): HttpRoutes[F] = {
+  def parkingCalculatorRoutes[F[_]](
+      P: ParkingCalculator[F],
+      registry: CollectorRegistry
+  )(implicit F: Sync[F]): HttpRoutes[F] = {
+    val successCounter =
+      Counter.build("pr_success", "successfully calculated rate").register(registry)
+    val failureCounter = Counter.build("pr_failed", "failed to calculate rate").register(registry)
+
     val dsl = new Http4sDsl[F] {}
     import dsl._
     HttpRoutes.of[F] {
@@ -18,7 +26,13 @@ object SpotheroRoutes {
         for {
           parkingPeriod <- request.as[ParkingPeriod]
           maybeCost <- P.price(parkingPeriod)
-          resp <- maybeCost.fold(Ok(_), Ok(_))
+          resp <- maybeCost.fold(
+            { l =>
+              F.delay(failureCounter.inc()) *> Ok(l)
+            }, { r =>
+              F.delay(successCounter.inc()) *> Ok(r)
+            }
+          )
         } yield resp
     }
   }
